@@ -1,42 +1,50 @@
 class Pose extends HTMLElement{
     id;
-    disabled = true;
     urlImage;
-    urlSound;
+    disabled = true;
+    audio;
 
-    constructor(id, urlImage) {
+    constructor(pose, soundUrl) {
         super();
-        this.id = id;
-        this.urlImage = image;
-        this.urlSound = sound;
-        this.createPose();
+        //this.audio = this.createAudioEl(soundUrl);
         this.initListeners();
+        this.className = "pose-element";
+        this.innerHTML = "hjhkhkhkjhkjhkhk";
+    }
+
+    createAudioEl(soundUrl){
+        const audio = new Audio();
+        audio.setAttribute('style','display: none;');
+        this.appendChild(audio);
+        audio.src = 'assets/sounds/' + soundUrl + '.wav';
+        return audio;
     }
 
     initListeners(){
-        var event = new CustomEvent("poseClicked", {
-            detail: "pose" + this.id 
-        });
-        this.dispatchEvent(event);
+        this.onclick = function () {
+            this.playsSound().then(function () {
+
+            });
+            /*var event = new CustomEvent("poseClicked", {
+                detail: "pose" + this.id
+            });
+            this.dispatchEvent(event);*/
+        }
     }
 
     createPose(){
         this.setAttribute("data-id", this.id);
         this.setAttribute("class", "poseBtn");
-        this.setAttribute("disabled", this.disabled);
+        this.setAttribute("disabled", this.disabled.toString());
         var poseImg = document.createElement('img');
         poseImg.setAttribute("class", "poseImg");
         poseImg.setAttribute("url", "assets/pictures/" + this.urlImage + ".jpg");
-        var poseSound = document.createElement("audio");
-        poseSound.setAttribute("class", "poseSound");
-        poseSound.setAttribute("src", "assets/sounds/" + this.urlSound + ".mp3");
         this.appendChild(poseImg);
-        this.appendChild(poseSound);
     }
 
     playsSound(){
-        
+        this.audio.play();
     }
 
 }
-customElements.define('pose', Pose);
+window.customElements.define('pose-element', Pose);

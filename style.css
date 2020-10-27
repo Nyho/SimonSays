@@ -1,4 +1,10 @@
-body{
+body {
     padding: 0;
     margin: 0;
+}
+
+.pose-element {
+    width: 100px;
+    height: 100px;
+    background: red;
 }
