@@ -3,8 +3,21 @@ body {
     margin: 0;
 }
 
-.pose-element {
-    width: 100px;
-    height: 100px;
-    background: red;
+#mainContainer {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.poseBtn {
+    width: 20%;
+    height: 20%;
+}
+
+.poseImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
