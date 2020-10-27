@@ -1,6 +1,9 @@
 const image = [image1, image2, image3, image4, image5, image6]
 const son = [son1, son2, son3, son4, son5, son6]
 
+/**
+ * génère des poses dans le document html
+ */
 function generateStaticPoses() {
     for (var i = 1; i < 6; i++) {
         let pose = new Pose(i, image[i], son[i]);
@@ -8,6 +11,9 @@ function generateStaticPoses() {
     }
 }
 
+/**
+ * génère un tableau de pose
+ */
 function generatePoses() {
     var poses = [];
     for (var i = 1; i < 6; i++) {
@@ -16,10 +22,17 @@ function generatePoses() {
     return poses;
 }
 
+/**
+ * randomize un tableau de pose
+ */
 function getRandomPoses(poses) {
     return poses[Math.floor(Math.random() * poses.length)];
 }
 
+
+/**
+ * Récupère une pose aléatoire et la stock dans un tableau sequence
+ */
 const sequence = [
     getRandomPoses(generatePoses())
 ];
