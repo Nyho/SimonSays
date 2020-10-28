@@ -1,3 +1,3 @@
-
-generateStaticPoses();
-generateRandomPoseHTML()
+$(document).ready(function(){
+    initGame();
+});
