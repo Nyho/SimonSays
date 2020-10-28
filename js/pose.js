@@ -14,17 +14,9 @@ class Pose extends HTMLElement {
     }
 
     initListeners(){
+        let me = this;
         this.onclick = function () {
-            console.log(!this.disabled);
-            if(!this.disabled){
-                this.playsSound().then(function () {
-
-                });
-                var event = new CustomEvent("poseClicked", {
-                    detail: this.poseName
-                });
-                this.dispatchEvent(event);
-            }
+            me.playsSound();
         }
     }
 
@@ -43,6 +35,10 @@ class Pose extends HTMLElement {
 
     playsSound(){
         var me = this;
+        if(me.disabled){
+            return Promise.resolve();
+        }
+        me.eventHandler();
         return new Promise(function (resolve, reject) {
             me.audio.play();
             me.audio.onended = function () {
@@ -53,6 +49,13 @@ class Pose extends HTMLElement {
                 reject(err)
             }
         })
+    }
+
+    eventHandler(){
+        var event = new CustomEvent("poseClicked", {
+            detail: this.poseName
+        });
+        this.dispatchEvent(event);
     }
 
     createPose(imageName){
