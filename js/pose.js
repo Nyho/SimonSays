@@ -16,7 +16,8 @@ class Pose extends HTMLElement {
     initListeners(){
         let me = this;
         this.onclick = function () {
-            me.playsSound();
+            me.playSound();
+            console.log(me);
         }
     }
 
@@ -33,7 +34,7 @@ class Pose extends HTMLElement {
         this.disabled = status;
     }
 
-    playsSound(){
+    playSound(){
         var me = this;
         if(me.disabled){
             return Promise.resolve();

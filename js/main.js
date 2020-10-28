@@ -1,2 +1,3 @@
-
-generateStaticPoses();
+$(document).ready(function(){
+    initGame();
+});
