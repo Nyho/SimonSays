@@ -79,7 +79,7 @@ function generateRandomPoseHTML(){
 
 
 function playPose(pose) {
-    return pose.playsSound();
+    return pose.playSound();
 }
 function playPoses(sequence){
     return new Promise(function(resolve, reject){
