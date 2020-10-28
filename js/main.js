@@ -1,2 +1,3 @@
 
 generateStaticPoses();
+generateRandomPoseHTML()

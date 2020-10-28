@@ -25,7 +25,6 @@ class Pose extends HTMLElement {
         audio.setAttribute('style','display: none;');
         this.appendChild(audio);
         audio.src = 'assets/sounds/' + soundName + '.mp3';
-        audio.preload;
         return audio;
     }
 
@@ -38,11 +37,11 @@ class Pose extends HTMLElement {
         if(me.disabled){
             return Promise.resolve();
         }
-        me.eventHandler();
+
         return new Promise(function (resolve, reject) {
             me.audio.play();
             me.audio.onended = function () {
-                console.log("Tout s'est correctement déroulé.");
+                me.eventHandler();
                 resolve();
             };
             me.audio.onerror = function (err) {
