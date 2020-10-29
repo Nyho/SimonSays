@@ -13,81 +13,71 @@ body {
 }
 
 .gameBoard {
-    background-color: white;
-    padding: 30px;
-    width: 2500px;
-    height: 1400px;
-    border-radius: 20px;
+    background-image: url("assets/pictures/Background.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    width: 1200px;
+    height: 600px;
     display: flex;
+    flex-direction: column;
 }
 
 .poseTouch {
-    background-color: lightgrey;
-    width: 40%;
-    height: 100%;
+    width: 100%;
+    height: 30%;
     display: flex;
-    justify-content: center;
     align-items: center;
-    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .poseBtn {
-    width: 50%;
-    height: 33.33%;
+    margin: 10px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 }
 
 .poseImg {
-    width: 100%;
-    height: 100%;
+    border-radius: 200px;
+    width: 150px;
+    height: 150px;
     object-fit: cover;
-    border: 1px solid black;
 }
 
-.mainDisplay {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.scoreQuitContainer {
+    margin: 10px;
+    height: 70%;
 }
 
-.screenDisplay {
-    width: 95%;
-    height: 95%;
-    border: 1px solid black;
-    border-radius: 15px;
+.scoreQuit {
+    background: blueviolet;
+    width: 21%;
+    border: 4px solid cornflowerblue;
+    border-radius: 10px;
+    padding: 10px;
     display: flex;
-}
-
-.scoreDisplayBox {
-    width: 50%;
-    height: 100%;
-    display: flex;
-    align-items: start;
-    font-size: 100px;
+    flex-direction: column;
 }
 
 #score {
-    margin: 20px;
-}
-
-.quitBtnBox {
-    width: 50%;
-    height: 100%;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
+    background: darkslategrey;
+    width: 100%;
+    border-radius: 10px;
+    color: lightgrey;
+    text-align: center;
+    font-size: 40px;
 }
 
 #quit {
-    width: 300px;
-    height: 100px;
-    margin: 20px;
+    background: midnightblue;
+    margin-top: 10px;
+    color: lightgrey;
+    border: none;
+    border-radius: 10px;
+    height: 30px;
 }
 
-.mainDisplay {
-    background-color: lightslategrey;
-    width: 60%;
-    height: 100%;
+#quit:focus {
+    outline: none;
 }

@@ -1,11 +1,17 @@
 var poseParameters = [
-    { poseName : 'test1', soundName : 'test1', imageName : '1'},
-    { poseName : 'test2', soundName : 'test1', imageName : '2'},
-    { poseName : 'test3', soundName : 'test1', imageName : '3'},
-    { poseName : 'test4', soundName : 'test1', imageName : '4'},
-    { poseName : 'test5', soundName : 'test1', imageName : '5'},
-    { poseName : 'test6', soundName : 'test1', imageName : '6'}
+    { poseName : 'test1', soundName : 'test1', imageName : '6'},
+    { poseName : 'test2', soundName : 'test1', imageName : '6'},
+    { poseName : 'test3', soundName : 'test1', imageName : '6'},
+    { poseName : 'test4', soundName : 'test1', imageName : '6'}
 ]
+
+/**
+ * Initialisation du jeu
+ */
+function initGame() {
+    createGameboard();
+    quitGame();
+}
 
 /**
  * génère des poses dans le document html
@@ -19,27 +25,23 @@ function generatePosesBtn() {
     }
 }
 
+/**
+ * génère la structure html
+ */
 function createGameboard(){
-    let gameBoardHTML = '<div class="mainMenu"></div>' +
+    let gameBoardHTML =
+        '<div class="mainMenu"></div>' +
         '<div class="gameBoard">' +
-        '<div class="poseTouch"></div>' +
-        '<div class="mainDisplay">' +
-        '<div class="screenDisplay">' +
-        '<div class="scoreDisplayBox">' +
+        '<div class="scoreQuitContainer">' +
+        '<div class="scoreQuit">' +
         '<div id="score">000000000</div>' +
-        '</div>' +
-        '<div class="quitBtnBox">' +
-        '<button id="quit"></button>' +
+        '<button id="quit">QUIT GAME</button>' +
         '</div>' +
         '</div>' +
-        '</div>' +
+        '<div class="poseTouch"></div>' +
         '</div>';
     $('#mainContainer').append(gameBoardHTML);
     generatePosesBtn()
-}
-
-function initGame() {
-    createGameboard();
 }
 
 /**
@@ -98,8 +100,34 @@ function playPoses(sequence){
     });
 }
 
-document.body.onclick = function() {
+/*document.body.onclick = function() {
     playPoses(sequence).then(function(data){
         console.log(data);
     });
+}*/
+
+/**
+ * Lorsque le joueur perd la partie
+ */
+function endGame() {
+    var victory = false;
+    if (victory === false) {
+        alert('Game Over!');
+        /*putScoreInTabScore(scoreJoueur);*/
+        /*initGame();*/
+    }
+}
+
+/**
+ * Lorsque le joueur quitte le jeu
+ */
+function quitGame() {
+    $('#quit').click(function () {
+        console.log("click!");
+        var quitGameChoice = confirm('Quit game?');
+        if (quitGameChoice === true) {
+            console.log("Game over!");
+            endGame();
+        }
+    })
 }
