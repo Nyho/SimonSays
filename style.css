@@ -22,6 +22,9 @@ body {
     display: flex;
     flex-direction: column;
 }
+.active {
+    display: none !important;
+}
 
 .poseTouch {
     width: 100%;

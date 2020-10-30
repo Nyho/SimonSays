@@ -1,8 +1,8 @@
 var poseParameters = [
-    { poseName : 'test1', soundName : 'test1', imageName : '6'},
-    { poseName : 'test2', soundName : 'test1', imageName : '6'},
-    { poseName : 'test3', soundName : 'test1', imageName : '6'},
-    { poseName : 'test4', soundName : 'test1', imageName : '6'}
+    {poseName: 'test1', soundName: 'test1', imageName: '1'},
+    {poseName: 'test2', soundName: 'test1', imageName: '2'},
+    {poseName: 'test3', soundName: 'test1', imageName: '3'},
+    {poseName: 'test4', soundName: 'test1', imageName: '4'}
 ]
 
 /**
@@ -28,7 +28,7 @@ function generatePosesBtn() {
 /**
  * génère la structure html
  */
-function createGameboard(){
+function createGameboard() {
     let gameBoardHTML =
         '<div class="mainMenu"></div>' +
         '<div class="gameBoard">' +
@@ -38,10 +38,12 @@ function createGameboard(){
         '<button id="quit">QUIT GAME</button>' +
         '</div>' +
         '</div>' +
+        '<div class="middle-img"></div>' +
         '<div class="poseTouch"></div>' +
         '</div>';
     $('#mainContainer').append(gameBoardHTML);
     generatePosesBtn()
+
 }
 
 /**
@@ -71,11 +73,12 @@ const sequence = [
     getRandomPoses(generatePoses()),
     getRandomPoses(generatePoses()),
     getRandomPoses(generatePoses())
+
 ];
 
-function generateRandomPoseHTML(){
+function generateRandomPoseHTML() {
     for (let poses of sequence) {
-        document.getElementById("secondContainer").appendChild(poses);
+        $('.middle-img').append(poses);
     }
 }
 
@@ -83,28 +86,33 @@ function generateRandomPoseHTML(){
 function playPose(pose) {
     return pose.playSound();
 }
-function playPoses(sequence){
-    return new Promise(function(resolve, reject){
+
+function playPoses(sequence) {
+    return new Promise(function (resolve, reject) {
         var i = 0;
-        function playByloop(e){
-            var note = sequence[e];
-            if (!note){
+
+        function playByloop(e) {
+            var pose = sequence[e];
+            if (!pose) {
                 return resolve('TOUTE LA MELODIE EST JOUEE');
             }
-            return playPose(note).then( function(){
+            $('.middle-img').append(pose);
+            return playPose(pose).then(function () {
+                pose.className += ' active';
                 e++;
                 return playByloop(e);
             });
+
         }
         playByloop(i);
     });
 }
 
-/*document.body.onclick = function() {
-    playPoses(sequence).then(function(data){
+document.body.onclick = function () {
+    playPoses(sequence).then(function (data) {
         console.log(data);
     });
-}*/
+}
 
 /**
  * Lorsque le joueur perd la partie

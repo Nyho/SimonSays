@@ -41,6 +41,7 @@ class Pose extends HTMLElement {
 
         return new Promise(function (resolve, reject) {
             me.audio.play();
+
             me.audio.onended = function () {
                 me.eventHandler();
                 resolve();
