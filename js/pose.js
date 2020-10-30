@@ -17,7 +17,6 @@ class Pose extends HTMLElement {
         let me = this;
         this.onclick = function () {
             me.playSound();
-            console.log(me);
         }
     }
 
