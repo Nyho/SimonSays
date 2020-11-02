@@ -31,7 +31,7 @@ function initGame() {
 function clickEvent() {
     /*------------------------- test-Module-Start -------------------------*/
         $('#hideMenu').click(function () {
-            $('.mainMenu').fadeToggle(200);
+            $('.mainMenu').fadeToggle(500);
         });
     /*-------------------------- test-Module-End --------------------------*/
     $('#scoreBtn').click(function() {
@@ -69,23 +69,19 @@ function generatePosesBtn() {
 function createGameHTML(){
     let gameHTML =
         '<div class="mainMenu">' +
-        '<div id="scoreTitle"></div>' +
-        '<div class="score" id="highScoresTable"></div>' +
-        '<div id="formulaire">' +
-        '<form name="scoreForm">' +
-        '<input type="text" name="playerName">' +
-        '</form>' +
-        '<input name="play" type="button" id="scoreBtn" value="PLAY">' +
-        '</div>' +
+            '<div class="score" id="highScoresTable"></div>' +
+            '<div class="scoreBtnBox">' +
+                '<input name="play" type="button" id="scoreBtn">' +
+            '</div>' +
         '</div>' +
         '<div class="gameBoard">' +
-        '<div class="scoreQuitContainer">' +
-        '<div class="scoreQuit">' +
-        '<div id="score">000000000</div>' +
-        '<button id="quit">QUIT GAME</button>' +
-        '</div>' +
-        '</div>' +
-        '<div class="poseTouch"></div>' +
+            '<div class="scoreQuitContainer">' +
+                '<div class="scoreQuit">' +
+                    '<div id="score">000000000</div>' +
+                    '<button id="quit">QUIT GAME</button>' +
+                '</div>' +
+            '</div>' +
+            '<div class="poseTouch"></div>' +
         '</div>';
     $('#mainContainer').append(gameHTML);
     generatePosesBtn()
@@ -199,12 +195,12 @@ function getPlayerScore() {
  */
 function createScore(){
     return [
-        { nom : 'PLAYER1', valeur: '000000000'},
-        { nom : 'PLAYER1', valeur: '000000000'},
-        { nom : 'PLAYER1', valeur: '000000000'},
-        { nom : 'PLAYER1', valeur: '000000000'},
-        { nom : 'PLAYER1', valeur: '000000000'},
-        { nom : 'PLAYER1', valeur: '000000000'}
+        { nom : 'PLAYER', valeur: '000000000'},
+        { nom : 'PLAYER', valeur: '000000000'},
+        { nom : 'PLAYER', valeur: '000000000'},
+        { nom : 'PLAYER', valeur: '000000000'},
+        { nom : 'PLAYER', valeur: '000000000'},
+        { nom : 'PLAYER', valeur: '000000000'}
     ];
 }
 
@@ -214,6 +210,7 @@ function createScore(){
 function getScoreFromLs() {
     var scoreStr = localStorage.getItem('simon-score');
     score = JSON.parse(scoreStr);
+    console.log(score);
     if (!score){
         var score = createScore();
     }
@@ -224,19 +221,20 @@ function getScoreFromLs() {
  * Création de la structure HTML du tableau des meilleurs scores
  */
 function composeHtmlScore(tabScore){
-    var scoreHtml  = "<table>";
-    scoreHtml += "<thead>";
-    scoreHtml += "<tr><th>PLAYER NAME</th><th>SCORE</th></tr>";
-    scoreHtml += "</thead>";
-    scoreHtml += "<tbody>";
-    for (let i = 0; i < tabScore.length; i++) {
-        scoreHtml += "<tr>";
-        scoreHtml += "<td>"+ tabScore[i].nom +"</td>";
-        scoreHtml += "<td>"+ tabScore[i].valeur +"</td>";
-        scoreHtml += "</tr>";
-    }
-    scoreHtml += "</tbody>";
-    scoreHtml += "</table>";
+    var scoreHtml  = "<div class='scoresTitle'>HIGHSCORES</div>";
+        scoreHtml += "<table class='highscores'>";
+            scoreHtml += "<tbody>";
+            for (let i = 0; i < tabScore.length; i++) {
+                scoreHtml += "<tr>";
+                    scoreHtml += "<td class='nameLign'>"+ tabScore[i].nom +"</td>";
+                    scoreHtml += "<td class='scoreLign'>"+ tabScore[i].valeur +"</td>";
+                scoreHtml += "</tr>";
+            }
+            scoreHtml += "</tbody>";
+        scoreHtml += "</table>";
+        scoreHtml += "<form id='formulaire' name='scoreForm'>";
+        scoreHtml += "<input type='text' name='playerName' placeholder='Enter your name here'>";
+        scoreHtml += "</form>";
     return scoreHtml;
 }
 

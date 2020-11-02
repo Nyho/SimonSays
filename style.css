@@ -3,13 +3,6 @@ body {
     margin: 0;
 }
 
-#hideMenu {
-    position: absolute;
-    background: yellow;
-    width: 150px;
-    height: 50px;
-}
-
 #mainContainer {
     background: darkslategrey;
     width: 100%;
@@ -19,12 +12,123 @@ body {
     align-items: center;
 }
 
+#hideMenu {
+    position: absolute;
+    background: yellow;
+    width: 150px;
+    height: 50px;
+}
+
 .mainMenu {
-    background: white;
+    background-image: url("assets/pictures/BackgroundMenu.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
     position: absolute;
     width: 1200px;
     height: 600px;
     font-size: 20px;
+    display: flex;
+}
+
+#highScoresTable {
+    width: 60%;
+    height: 100%;
+    font-size: 45px;
+    font-family: Arial;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.scoresTitle {
+    margin-bottom: 15px;
+}
+
+table.highscores {
+    background: rgba(11, 0, 41, 0.50);
+    color: white;
+    width: 80%;
+    padding: 3%;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+tbody {
+    width: 100%;
+}
+
+tr {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+td {
+    width: 50%;
+}
+
+td.scoreLign {
+    text-align: end;
+}
+
+#formulaire {
+    width: 100%;
+    height: 20%;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+input[name='playerName'] {
+    background: rgba(11, 0, 41, 0.50);
+    width: 80%;
+    height: 60%;
+    font-size: 45px;
+    color: white;
+    border: none;
+    border-radius: 10px;
+}
+
+input[name='playerName']::placeholder {
+    padding-left: 18px;
+    font-size: 45px;
+    color: white;
+}
+
+.scoreBtnBox {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+input[name='play'] {
+    background-image: url("assets/pictures/playBtn1.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+    margin-left: 60px;
+    border-radius: 300px;
+    font-size: 100px;
+    width: 65%;
+    height: 60%;
+    opacity: 0.60;
+    transition: 0.2s;
+}
+
+input[name='play']:hover {
+    background-image: url("assets/pictures/playBtn2.png");
+    opacity: 1;
+}
+
+input[name='play']:focus {
+    outline: none;
 }
 
 .gameBoard {
