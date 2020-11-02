@@ -1,3 +1,5 @@
+/////////////////////////////////////// GLOBALS-START ///////////////////////////////////////
+
 var poseParameters = [
     { poseName : 'test1', soundName : 'test1', imageName : '6'},
     { poseName : 'test2', soundName : 'test1', imageName : '6'},
@@ -5,13 +7,49 @@ var poseParameters = [
     { poseName : 'test4', soundName : 'test1', imageName : '6'}
 ]
 
+var playerScore = 3000;
+var playerName;
+var isWin;
+
+//////////////////////////////////////// GLOBALS-END ////////////////////////////////////////
+
+//////////////////////////////////// INITIALISATION-START ///////////////////////////////////
+
 /**
  * Initialisation du jeu
  */
 function initGame() {
-    createGameboard();
+    createGameHTML();
+    clickEvent();
+    afficheScore(getScoreFromLs());
     quitGame();
 }
+
+/**
+ * Evenements click
+ */
+function clickEvent() {
+    /*------------------------- test-Module-Start -------------------------*/
+        $('#hideMenu').click(function () {
+            $('.mainMenu').fadeToggle(200);
+        });
+    /*-------------------------- test-Module-End --------------------------*/
+    $('#scoreBtn').click(function() {
+        playerName = $('input[name=playerName]').val();
+        if (playerName.trim() !== ""){
+            $('.mainMenu').fadeToggle(200);
+            /*>>>>>>>>>> GAME START HERE! <<<<<<<<<<*/
+        } else {
+            alert("Entre un nom correct fdp!");
+            playerName;
+            console.log(playerName)
+        }
+    });
+}
+
+///////////////////////////////////// INITIALISATION-END ////////////////////////////////////
+
+////////////////////////////////////// STRUCTURE-START //////////////////////////////////////
 
 /**
  * génère des poses dans le document html
@@ -28,9 +66,18 @@ function generatePosesBtn() {
 /**
  * génère la structure html
  */
-function createGameboard(){
-    let gameBoardHTML =
-        '<div class="mainMenu"></div>' +
+function createGameHTML(){
+    let gameHTML =
+        '<div class="mainMenu">' +
+        '<div id="scoreTitle"></div>' +
+        '<div class="score" id="highScoresTable"></div>' +
+        '<div id="formulaire">' +
+        '<form name="scoreForm">' +
+        '<input type="text" name="playerName">' +
+        '</form>' +
+        '<input name="play" type="button" id="scoreBtn" value="PLAY">' +
+        '</div>' +
+        '</div>' +
         '<div class="gameBoard">' +
         '<div class="scoreQuitContainer">' +
         '<div class="scoreQuit">' +
@@ -40,9 +87,13 @@ function createGameboard(){
         '</div>' +
         '<div class="poseTouch"></div>' +
         '</div>';
-    $('#mainContainer').append(gameBoardHTML);
+    $('#mainContainer').append(gameHTML);
     generatePosesBtn()
 }
+
+/////////////////////////////////////// STRUCTURE-END ///////////////////////////////////////
+
+//////////////////////////////////// GAME-SEQUENCE-START ////////////////////////////////////
 
 /**
  * génère un tableau de pose
@@ -100,21 +151,24 @@ function playPoses(sequence){
     });
 }
 
-/*document.body.onclick = function() {
-    playPoses(sequence).then(function(data){
-        console.log(data);
-    });
-}*/
+///////////////////////////////////// GAME-SEQUENCE-END /////////////////////////////////////
+
+/////////////////////////////////// GAME-COMPARISON-START ///////////////////////////////////
+//////////////////////////////////// GAME-COMPARISON-END ////////////////////////////////////
+
+/////////////////////////////////////// ENDGAME-START ///////////////////////////////////////
 
 /**
- * Lorsque le joueur perd la partie
+ * Lorsque le jeu se termine
  */
 function endGame() {
-    var victory = false;
-    if (victory === false) {
+    if (isWin === false) {
         alert('Game Over!');
-        /*putScoreInTabScore(scoreJoueur);*/
-        /*initGame();*/
+        getPlayerScore();
+        $('.mainMenu').fadeToggle(200);
+    } else {
+        getPlayerScore();
+        $('.mainMenu').fadeToggle(200);
     }
 }
 
@@ -123,11 +177,113 @@ function endGame() {
  */
 function quitGame() {
     $('#quit').click(function () {
-        console.log("click!");
+        isWin = true;
         var quitGameChoice = confirm('Quit game?');
         if (quitGameChoice === true) {
-            console.log("Game over!");
             endGame();
         }
     })
 }
+
+//////////////////////////////////////// ENDGAME-END ////////////////////////////////////////
+
+//////////////////////////////////////// SCORE-START ////////////////////////////////////////
+
+function getPlayerScore() {
+    var score = { nom: playerName, valeur : playerScore };
+    putScoreInTabScore(score);
+}
+
+/**
+ * Création d'un tableau de scores par défaut
+ */
+function createScore(){
+    return [
+        { nom : 'PLAYER1', valeur: '000000000'},
+        { nom : 'PLAYER1', valeur: '000000000'},
+        { nom : 'PLAYER1', valeur: '000000000'},
+        { nom : 'PLAYER1', valeur: '000000000'},
+        { nom : 'PLAYER1', valeur: '000000000'},
+        { nom : 'PLAYER1', valeur: '000000000'}
+    ];
+}
+
+/**
+ * Récupération des scores dans le local storage
+ */
+function getScoreFromLs() {
+    var scoreStr = localStorage.getItem('simon-score');
+    score = JSON.parse(scoreStr);
+    if (!score){
+        var score = createScore();
+    }
+    return score;
+}
+
+/**
+ * Création de la structure HTML du tableau des meilleurs scores
+ */
+function composeHtmlScore(tabScore){
+    var scoreHtml  = "<table>";
+    scoreHtml += "<thead>";
+    scoreHtml += "<tr><th>PLAYER NAME</th><th>SCORE</th></tr>";
+    scoreHtml += "</thead>";
+    scoreHtml += "<tbody>";
+    for (let i = 0; i < tabScore.length; i++) {
+        scoreHtml += "<tr>";
+        scoreHtml += "<td>"+ tabScore[i].nom +"</td>";
+        scoreHtml += "<td>"+ tabScore[i].valeur +"</td>";
+        scoreHtml += "</tr>";
+    }
+    scoreHtml += "</tbody>";
+    scoreHtml += "</table>";
+    return scoreHtml;
+}
+
+/**
+ * Affichage du tableau des meilleurs scores
+ */
+function afficheScore(tabScore){
+    var scoreHtml = composeHtmlScore(tabScore);
+    $("#highScoresTable").html(scoreHtml);
+}
+
+/**
+ * Enregistrement du score dans le local storage
+ */
+function saveTabScoreInLs(tabScore) {
+    localStorage.setItem('simon-score', JSON.stringify(tabScore));
+}
+
+/**
+ * Selection des 6 meilleurs scores
+ */
+function getOnlyTop(tabScore){
+    return tabScore.splice(0, 6);
+}
+
+/**
+ * Tri du tableau des meilleurs scores
+ */
+function sortTabScore(tabScore) {
+    return tabScore.sort(function(a, b){
+        var va = a.valeur;
+        var vb = b.valeur;
+        if ( va > vb ) return -1;
+        if ( vb >= va ) return 1;
+    });
+}
+
+/**
+ * Remplissage du tableaux des meilleurs scores
+ */
+function putScoreInTabScore( newScore ){
+    var tabScore = getScoreFromLs();
+    tabScore.push(newScore);
+    tabScore = sortTabScore(tabScore);
+    tabScore = getOnlyTop(tabScore);
+    saveTabScoreInLs(tabScore);
+    afficheScore(tabScore);
+}
+
+///////////////////////////////////////// SCORE-END /////////////////////////////////////////

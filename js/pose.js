@@ -38,11 +38,11 @@ class Pose extends HTMLElement {
         if(me.disabled){
             return Promise.resolve();
         }
-
         return new Promise(function (resolve, reject) {
             me.audio.play();
             me.audio.onended = function () {
                 me.eventHandler();
+                console.log("sound has been played!")
                 resolve();
             };
             me.audio.onerror = function (err) {
