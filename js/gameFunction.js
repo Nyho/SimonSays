@@ -12,6 +12,7 @@ let playerName;
 let isWin;
 let isPlayDisabled;
 let play = '#playBtn';
+let nameInput = '#playerName';
 
 //////////////////////////////////////// GLOBALS-END ////////////////////////////////////////
 
@@ -21,11 +22,25 @@ let play = '#playBtn';
  * Initialisation du jeu
  */
 function initGame() {
-    createGameHTML();
+    let main = $('#mainContainer').is(":parent");
+    if (!main) {
+        appendHtml();
+    }
+    generatePosesBtn();
     afficheScore(getScoreFromLs());
+    inputNameKeypress();
     activePlayBtn();
-    resetMenu();
+    playBtnHover();
     quitGame();
+}
+
+/**
+ * Réinitialise le jeu
+ */
+function resetGame() {
+    playerName = "";
+    $('.poseTouch').empty();
+    initGame();
 }
 
 /*------------------------- test-Module-Start -------------------------*/
@@ -43,14 +58,14 @@ $('#hideMenu').click(function () {
 function launchGame() {
     $(play).off("mouseenter", "mouseleave");
     classToggle(play, false, "pbHover");
-    let name = $('#playerName').val();
+    let name = $(nameInput).val();
     playerName = name.trim();
     toggleMenu(500);
     /*>>>>>>>>>> GAME START HERE! <<<<<<<<<<*/
 }
 
 /**
- * Activer le boutton play
+ * Activation du boutton play
  */
 function activePlayBtn() {
     $(play).click(function () {
@@ -78,16 +93,23 @@ function classToggle(el, add, className) {
         $(el).addClass(className);
 }
 
+function alert(el, timing) {
+    $(el).fadeToggle(300);
+    setTimeout(function () {
+        $(el).fadeToggle(300);
+    }, timing);
+}
+
 /**
  * Controle de la valeur de playerName
  */
 function isValidName() {
-    let name = $('#playerName').val();
+    let name = $(nameInput).val();
     return name.trim() !== '';
 }
 
 /**
- * Status de isDisabled
+ * Status de isPlayDisabled
  */
 function playBtnStatus() {
     let status = isValidName();
@@ -98,6 +120,18 @@ function playBtnStatus() {
         isPlayDisabled = false;
         classToggle(play, true, "pbHover");
     }
+}
+
+/**
+ * Activation de l'event "keyPress" sur nameInput
+ */
+function inputNameKeypress() {
+    $(nameInput).keyup(function () {
+        let invalid = '.invalidName';
+        if (!isValidName()) {
+            alert(invalid, 2000)
+        }
+    })
 }
 
 /**
@@ -113,6 +147,13 @@ function playBtnHover() {
             classToggle('#playerName', false, "pnBlinking");
         }
     });
+}
+
+/**
+ * Remplissage du mainContainer avec la structure HTML
+ */
+function appendHtml() {
+    $('#mainContainer').append(createGameHTML());
 }
 
 ///////////////////////////////////// INITIALISATION-END ////////////////////////////////////
@@ -132,27 +173,49 @@ function generatePosesBtn() {
 }
 
 /**
+ * Création de la structure HTML du tableau des high scores
+ */
+function composeHtmlScore(tabScore){
+    let scoreHtml =
+        "<div class='scoresTitle'>HIGH SCORE</div>" +
+        "<table class='highscores'>" +
+        "<tbody>";
+        for (let i = 0; i < tabScore.length; i++) {
+            scoreHtml +=
+                "<tr>" +
+                "<td class='nameLign'>"+ tabScore[i].nom +"</td>" +
+                "<td class='scoreLign'>"+ tabScore[i].valeur +"</td>" +
+                "</tr>";
+        }
+        scoreHtml +=
+        "</tbody>" +
+        "</table>" +
+        "<form id='formulaire' onsubmit='return false' name='scoreForm'>" +
+        "<input type='text' id='playerName' name='playerName' placeholder='Enter your name here!'>" +
+        "<div class='invalidName'>invalid name!</div>" +
+        "</form>";
+    return scoreHtml;
+}
+
+/**
  * génère la structure html
  */
 function createGameHTML(){
-    let gameHTML =
-        '<div class="mainMenu">' +
-            '<div class="score" id="highScoresTable"></div>' +
-            '<div class="playBtnBox">' +
-                '<input name="play" type="button" id="playBtn">' +
-            '</div>' +
-        '</div>' +
-        '<div class="gameBoard">' +
-            '<div class="scoreQuitContainer">' +
-                '<div class="scoreQuit">' +
-                    '<div id="score">000000000</div>' +
-                    '<button id="quit">QUIT GAME</button>' +
-                '</div>' +
-            '</div>' +
-            '<div class="poseTouch"></div>' +
-        '</div>';
-    $('#mainContainer').append(gameHTML);
-    generatePosesBtn()
+    return  "<div class='mainMenu'>" +
+            "<div class='score' id='highScoresTable'></div>" +
+            "<div class='playBtnBox'>" +
+            "<input name='play' type='button' id='playBtn'>" +
+            "</div>" +
+            "</div>" +
+            "<div class='gameBoard'>" +
+            "<div class='scoreQuitContainer'>" +
+            "<div class='scoreQuit'>" +
+            "<div id='score'>000000000</div>" +
+            "<button id='quit'>QUIT GAME</button>" +
+            "</div>" +
+            "</div>" +
+            "<div class='poseTouch'></div>" +
+            "</div>";
 }
 
 /////////////////////////////////////// STRUCTURE-END ///////////////////////////////////////
@@ -223,25 +286,17 @@ function playPoses(sequence){
 /////////////////////////////////////// ENDGAME-START ///////////////////////////////////////
 
 /**
- * Réinitialise le jeu
- */
-function resetMenu() {
-    playerName = "";
-    playBtnHover();
-}
-
-/**
  * Lorsque le jeu se termine
  */
 function endGame() {
     if (isWin === false) {
         alert('Game Over!');
         getPlayerScore();
-        resetMenu();
+        resetGame();
         toggleMenu();
     } else {
         getPlayerScore();
-        resetMenu();
+        resetGame();
         toggleMenu();
     }
 }
@@ -295,28 +350,7 @@ function getScoreFromLs() {
 }
 
 /**
- * Création de la structure HTML du tableau des meilleurs scores
- */
-function composeHtmlScore(tabScore){
-    let scoreHtml  = "<div class='scoresTitle'>HIGH SCORE</div>";
-        scoreHtml += "<table class='highscores'>";
-            scoreHtml += "<tbody>";
-            for (let i = 0; i < tabScore.length; i++) {
-                scoreHtml += "<tr>";
-                    scoreHtml += "<td class='nameLign'>"+ tabScore[i].nom +"</td>";
-                    scoreHtml += "<td class='scoreLign'>"+ tabScore[i].valeur +"</td>";
-                scoreHtml += "</tr>";
-            }
-            scoreHtml += "</tbody>";
-        scoreHtml += "</table>";
-        scoreHtml += "<form id='formulaire' onsubmit='return false' name='scoreForm'>";
-        scoreHtml += "<input type='text' id='playerName' name='playerName' placeholder='Enter your name here!'>";
-        scoreHtml += "</form>";
-    return scoreHtml;
-}
-
-/**
- * Affichage du tableau des meilleurs scores
+ * Affichage du tableau des high scores
  */
 function afficheScore(tabScore){
     let scoreHtml = composeHtmlScore(tabScore);
@@ -331,14 +365,14 @@ function saveTabScoreInLs(tabScore) {
 }
 
 /**
- * Selection des 6 meilleurs scores
+ * Selection des 6 high scores
  */
 function getOnlyTop(tabScore){
     return tabScore.splice(0, 6);
 }
 
 /**
- * Tri du tableau des meilleurs scores
+ * Tri du tableau des high scores
  */
 function sortTabScore(tabScore) {
     return tabScore.sort(function(a, b){
@@ -350,7 +384,7 @@ function sortTabScore(tabScore) {
 }
 
 /**
- * Remplissage du tableaux des meilleurs scores
+ * Remplissage du tableaux des high scores
  */
 function putScoreInTabScore( newScore ){
     let tabScore = getScoreFromLs();

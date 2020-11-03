@@ -123,6 +123,13 @@ td.scoreLign {
     transition: none;
 }
 
+.invalidName {
+    position: absolute;
+    left: 50%;
+    display: none;
+    align-items: center;
+}
+
 .playBtnBox {
     width: 50%;
     height: 100%;
