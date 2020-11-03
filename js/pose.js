@@ -34,7 +34,7 @@ class Pose extends HTMLElement {
     }
 
     playSound(){
-        var me = this;
+        let me = this;
         if(me.disabled){
             return Promise.resolve();
         }
@@ -52,7 +52,7 @@ class Pose extends HTMLElement {
     }
 
     eventHandler(){
-        var event = new CustomEvent("poseClicked", {
+        let event = new CustomEvent("poseClicked", {
             detail: this.poseName
         });
         this.dispatchEvent(event);
@@ -61,7 +61,7 @@ class Pose extends HTMLElement {
     createPose(imageName){
         this.setAttribute("data-name", this.poseName);
         this.setAttribute("class", "poseBtn");
-        var poseImg = document.createElement("img");
+        let poseImg = document.createElement("img");
         poseImg.setAttribute("class", "poseImg");
         poseImg.setAttribute("src", "assets/pictures/" + imageName + ".jpg");
         this.appendChild(poseImg);

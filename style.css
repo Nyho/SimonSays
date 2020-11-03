@@ -1,3 +1,19 @@
+@font-face {
+    font-family: "Almost Japanese Comic";
+    src: url("assets/fonts/Almost Japanese Comic.ttf");
+}
+
+@font-face {
+    font-family: "Unicode";
+    src: url("assets/fonts/GnuUnifontFull-Pm9P.ttf");
+}
+
+@keyframes blinking {
+    0% { opacity:1; }
+    40% { opacity:0; }
+    100% { opacity:1; }
+}
+
 body {
     padding: 0;
     margin: 0;
@@ -34,8 +50,8 @@ body {
 #highScoresTable {
     width: 60%;
     height: 100%;
-    font-size: 45px;
-    font-family: Arial;
+    font-family: "Unicode";
+    font-size: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -43,11 +59,11 @@ body {
 }
 
 .scoresTitle {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 table.highscores {
-    background: rgba(11, 0, 41, 0.50);
+    background: rgba(11, 0, 41, 0.60);
     color: white;
     width: 80%;
     padding: 3%;
@@ -83,30 +99,38 @@ td.scoreLign {
     align-items: center;
 }
 
-input[name='playerName'] {
-    background: rgba(11, 0, 41, 0.50);
+#playerName {
+    background: rgba(11, 0, 41, 0.60);
     width: 80%;
     height: 60%;
+    text-align: center;
+    font-family: "Unicode";
     font-size: 45px;
     color: white;
     border: none;
     border-radius: 10px;
 }
 
-input[name='playerName']::placeholder {
-    padding-left: 18px;
+#playerName::placeholder {
     font-size: 45px;
     color: white;
 }
 
-.scoreBtnBox {
+#playerName.pnBlinking {
+    animation-duration: 1s;
+    animation-name: blinking;
+    animation-iteration-count: infinite;
+    transition: none;
+}
+
+.playBtnBox {
     width: 50%;
     height: 100%;
     display: flex;
     align-items: center;
 }
 
-input[name='play'] {
+#playBtn {
     background-image: url("assets/pictures/playBtn1.png");
     background-repeat: no-repeat;
     background-position: center;
@@ -118,16 +142,16 @@ input[name='play'] {
     font-size: 100px;
     width: 65%;
     height: 60%;
-    opacity: 0.60;
-    transition: 0.2s;
+    opacity: 0.40;
+    transition: 0.5s;
 }
 
-input[name='play']:hover {
+#playBtn.pbHover:hover {
     background-image: url("assets/pictures/playBtn2.png");
     opacity: 1;
 }
 
-input[name='play']:focus {
+#playBtn:focus {
     outline: none;
 }
 
